@@ -2,33 +2,84 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Bolillero de Bingo</title>
+  <title>Bingos El Changuito</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #111;
+      background: radial-gradient(circle, #222, #000);
       color: white;
       text-align: center;
-      padding: 30px;
+      padding: 25px;
     }
 
-    h1 {
+    .titulo {
+      font-size: 45px;
+      color: #FFD700;
+      text-shadow: 0 0 10px #FFD700, 0 0 20px #FFA500, 3px 3px 0 #000;
+      letter-spacing: 3px;
+      margin-bottom: 5px;
+    }
+
+    .subtitulo {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .opciones {
+      margin: 20px auto;
+      font-size: 20px;
+    }
+
+    .opciones select {
+      font-size: 20px;
+      padding: 8px 15px;
+      border-radius: 8px;
+      border: 2px solid #ffcc00;
+      background: #222;
       color: #ffcc00;
+      font-weight: bold;
+    }
+
+    .bolillero {
+      width: 240px;
+      height: 240px;
+      border: 8px solid #ffcc00;
+      border-radius: 50%;
+      margin: 25px auto;
+      position: relative;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 0 30px #ffcc00;
+      overflow: hidden;
     }
 
     #numeroActual {
-      font-size: 90px;
+      font-size: 85px;
       font-weight: bold;
       background: #ffcc00;
       color: #111;
-      width: 180px;
-      height: 180px;
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 30px auto;
-      box-shadow: 0 0 25px #ffcc00;
+      position: absolute;
+      left: 45px;
+      top: 45px;
+      box-shadow: inset -10px -10px 20px rgba(0,0,0,0.25), 0 0 20px #ffcc00;
+    }
+
+    .animar {
+      animation: girarBolilla 1s ease-in-out;
+    }
+
+    @keyframes girarBolilla {
+      0% { transform: translateY(-180px) rotate(0deg) scale(0.5); }
+      30% { transform: translateY(40px) rotate(180deg) scale(1.1); }
+      55% { transform: translateY(-25px) rotate(300deg) scale(0.95); }
+      75% { transform: translateY(15px) rotate(420deg) scale(1.05); }
+      100% { transform: translateY(0) rotate(720deg) scale(1); }
     }
 
     button {
@@ -56,7 +107,7 @@
       display: grid;
       grid-template-columns: repeat(10, 1fr);
       gap: 8px;
-      max-width: 700px;
+      max-width: 900px;
       margin-left: auto;
       margin-right: auto;
     }
@@ -75,23 +126,35 @@
     }
   </style>
 </head>
+
 <body>
 
-  <h1>🎱 Bolillero de Bingo</h1>
+  <h1 class="titulo">🎱 BINGOS EL CHANGUITO 🎱</h1>
+  <div class="subtitulo">¡La suerte está por comenzar!</div>
 
-  <div id="numeroActual">--</div>
+  <div class="opciones">
+    <label for="cantidad">Elegir modalidad:</label>
+    <select id="cantidad" onchange="cambiarCantidad()">
+      <option value="100">Del 1 al 100</option>
+      <option value="200">Del 1 al 200</option>
+    </select>
+  </div>
+
+  <div class="bolillero">
+    <div id="numeroActual">--</div>
+  </div>
 
   <button class="sacar" onclick="sacarNumero()">Sacar número</button>
   <button class="reiniciar" onclick="reiniciar()">Reiniciar</button>
 
   <h2>Números que ya salieron</h2>
-
   <div class="numeros" id="tablero"></div>
 
   <script>
-    const maxNumero = 90; // Cambia a 75 si tu bingo es de 75 números
+    let maxNumero = 100;
     let numerosDisponibles = [];
     let numerosSalidos = [];
+    let animando = false;
 
     function iniciar() {
       numerosDisponibles = [];
@@ -118,34 +181,73 @@
       }
     }
 
+    function cambiarCantidad() {
+      if (numerosSalidos.length > 0) {
+        const confirmar = confirm("Si cambiás la modalidad, se reinicia el bolillero. ¿Continuar?");
+
+        if (!confirmar) {
+          document.getElementById("cantidad").value = maxNumero;
+          return;
+        }
+      }
+
+      maxNumero = parseInt(document.getElementById("cantidad").value);
+      localStorage.setItem("maxNumero", maxNumero);
+      localStorage.removeItem("numerosSalidos");
+      iniciar();
+    }
+
     function sacarNumero() {
+      if (animando) return;
+
       if (numerosDisponibles.length === 0) {
         alert("Ya salieron todos los números");
         return;
       }
 
-      const indice = Math.floor(Math.random() * numerosDisponibles.length);
-      const numero = numerosDisponibles.splice(indice, 1)[0];
+      animando = true;
 
-      numerosSalidos.push(numero);
+      const bola = document.getElementById("numeroActual");
+      bola.textContent = "?";
+      bola.classList.remove("animar");
 
-      document.getElementById("numeroActual").textContent = numero;
-      document.getElementById("num-" + numero).classList.add("salio");
+      void bola.offsetWidth;
+      bola.classList.add("animar");
 
-      guardarNumeros();
+      setTimeout(() => {
+        const indice = Math.floor(Math.random() * numerosDisponibles.length);
+        const numero = numerosDisponibles.splice(indice, 1)[0];
+
+        numerosSalidos.push(numero);
+
+        bola.textContent = numero;
+        document.getElementById("num-" + numero).classList.add("salio");
+
+        guardarNumeros();
+        animando = false;
+      }, 1000);
     }
 
     function guardarNumeros() {
       localStorage.setItem("numerosSalidos", JSON.stringify(numerosSalidos));
     }
 
-    function cargarNumerosGuardados() {
-      const guardados = localStorage.getItem("numerosSalidos");
+    function cargarDatosGuardados() {
+      const maxGuardado = localStorage.getItem("maxNumero");
+      const salidosGuardados = localStorage.getItem("numerosSalidos");
 
-      if (guardados) {
-        numerosSalidos = JSON.parse(guardados);
+      if (maxGuardado) {
+        maxNumero = parseInt(maxGuardado);
+        document.getElementById("cantidad").value = maxNumero;
+      }
+
+      iniciar();
+
+      if (salidosGuardados) {
+        numerosSalidos = JSON.parse(salidosGuardados);
 
         numerosDisponibles = [];
+
         for (let i = 1; i <= maxNumero; i++) {
           if (!numerosSalidos.includes(i)) {
             numerosDisponibles.push(i);
@@ -153,7 +255,8 @@
         }
 
         numerosSalidos.forEach(num => {
-          document.getElementById("num-" + num).classList.add("salio");
+          const casilla = document.getElementById("num-" + num);
+          if (casilla) casilla.classList.add("salio");
         });
 
         if (numerosSalidos.length > 0) {
@@ -164,14 +267,13 @@
     }
 
     function reiniciar() {
-      if (confirm("¿Seguro que quieres reiniciar el bolillero?")) {
+      if (confirm("¿Seguro que querés reiniciar el bolillero?")) {
         localStorage.removeItem("numerosSalidos");
         iniciar();
       }
     }
 
-    iniciar();
-    cargarNumerosGuardados();
+    cargarDatosGuardados();
   </script>
 
 </body>

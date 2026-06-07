@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Bolillero de Bingo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #ffcc00;
+    }
+
+    #numeroActual {
+      font-size: 90px;
+      font-weight: bold;
+      background: #ffcc00;
+      color: #111;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 30px auto;
+      box-shadow: 0 0 25px #ffcc00;
+    }
+
+    button {
+      font-size: 22px;
+      padding: 15px 30px;
+      margin: 10px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .sacar {
+      background: #00c853;
+      color: white;
+    }
+
+    .reiniciar {
+      background: #d50000;
+      color: white;
+    }
+
+    .numeros {
+      margin-top: 25px;
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 8px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .numero {
+      background: #333;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 18px;
+    }
+
+    .salio {
+      background: #ffcc00;
+      color: #111;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎱 Bolillero de Bingo</h1>
+
+  <div id="numeroActual">--</div>
+
+  <button class="sacar" onclick="sacarNumero()">Sacar número</button>
+  <button class="reiniciar" onclick="reiniciar()">Reiniciar</button>
+
+  <h2>Números que ya salieron</h2>
+
+  <div class="numeros" id="tablero"></div>
+
+  <script>
+    const maxNumero = 90; // Cambia a 75 si tu bingo es de 75 números
+    let numerosDisponibles = [];
+    let numerosSalidos = [];
+
+    function iniciar() {
+      numerosDisponibles = [];
+      numerosSalidos = [];
+
+      for (let i = 1; i <= maxNumero; i++) {
+        numerosDisponibles.push(i);
+      }
+
+      crearTablero();
+      document.getElementById("numeroActual").textContent = "--";
+    }
+
+    function crearTablero() {
+      const tablero = document.getElementById("tablero");
+      tablero.innerHTML = "";
+
+      for (let i = 1; i <= maxNumero; i++) {
+        const div = document.createElement("div");
+        div.className = "numero";
+        div.id = "num-" + i;
+        div.textContent = i;
+        tablero.appendChild(div);
+      }
+    }
+
+    function sacarNumero() {
+      if (numerosDisponibles.length === 0) {
+        alert("Ya salieron todos los números");
+        return;
+      }
+
+      const indice = Math.floor(Math.random() * numerosDisponibles.length);
+      const numero = numerosDisponibles.splice(indice, 1)[0];
+
+      numerosSalidos.push(numero);
+
+      document.getElementById("numeroActual").textContent = numero;
+      document.getElementById("num-" + numero).classList.add("salio");
+
+      guardarNumeros();
+    }
+
+    function guardarNumeros() {
+      localStorage.setItem("numerosSalidos", JSON.stringify(numerosSalidos));
+    }
+
+    function cargarNumerosGuardados() {
+      const guardados = localStorage.getItem("numerosSalidos");
+
+      if (guardados) {
+        numerosSalidos = JSON.parse(guardados);
+
+        numerosDisponibles = [];
+        for (let i = 1; i <= maxNumero; i++) {
+          if (!numerosSalidos.includes(i)) {
+            numerosDisponibles.push(i);
+          }
+        }
+
+        numerosSalidos.forEach(num => {
+          document.getElementById("num-" + num).classList.add("salio");
+        });
+
+        if (numerosSalidos.length > 0) {
+          document.getElementById("numeroActual").textContent =
+            numerosSalidos[numerosSalidos.length - 1];
+        }
+      }
+    }
+
+    function reiniciar() {
+      if (confirm("¿Seguro que quieres reiniciar el bolillero?")) {
+        localStorage.removeItem("numerosSalidos");
+        iniciar();
+      }
+    }
+
+    iniciar();
+    cargarNumerosGuardados();
+  </script>
+
+</body>
+</html>

@@ -1,280 +1,430 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Bingos El Changuito</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BINGOS EL CHANGUITO</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: radial-gradient(circle, #222, #000);
-      color: white;
-      text-align: center;
-      padding: 25px;
-    }
+<style>
 
-    .titulo {
-      font-size: 45px;
-      color: #FFD700;
-      text-shadow: 0 0 10px #FFD700, 0 0 20px #FFA500, 3px 3px 0 #000;
-      letter-spacing: 3px;
-      margin-bottom: 5px;
-    }
+body{
+    margin:0;
+    padding:20px;
+    font-family:Arial, Helvetica, sans-serif;
+    background:linear-gradient(135deg,#111,#222,#000);
+    color:white;
+    text-align:center;
+}
 
-    .subtitulo {
-      font-size: 20px;
-      margin-bottom: 20px;
-    }
+.titulo{
+    font-size:50px;
+    color:#FFD700;
+    text-shadow:0 0 10px #FFD700,0 0 20px #FF9900;
+    margin-bottom:10px;
+}
 
-    .opciones {
-      margin: 20px auto;
-      font-size: 20px;
-    }
+.subtitulo{
+    font-size:20px;
+    margin-bottom:20px;
+}
 
-    .opciones select {
-      font-size: 20px;
-      padding: 8px 15px;
-      border-radius: 8px;
-      border: 2px solid #ffcc00;
-      background: #222;
-      color: #ffcc00;
-      font-weight: bold;
-    }
+.opciones{
+    margin-bottom:20px;
+}
 
-    .bolillero {
-      width: 240px;
-      height: 240px;
-      border: 8px solid #ffcc00;
-      border-radius: 50%;
-      margin: 25px auto;
-      position: relative;
-      background: rgba(255,255,255,0.08);
-      box-shadow: 0 0 30px #ffcc00;
-      overflow: hidden;
-    }
+select{
+    padding:10px;
+    font-size:18px;
+    border-radius:8px;
+    border:none;
+    font-weight:bold;
+}
 
-    #numeroActual {
-      font-size: 85px;
-      font-weight: bold;
-      background: #ffcc00;
-      color: #111;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: absolute;
-      left: 45px;
-      top: 45px;
-      box-shadow: inset -10px -10px 20px rgba(0,0,0,0.25), 0 0 20px #ffcc00;
-    }
+.contenedor{
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    gap:30px;
+    flex-wrap:wrap;
+}
 
-    .animar {
-      animation: girarBolilla 1s ease-in-out;
-    }
+.zona-central{
+    max-width:900px;
+}
 
-    @keyframes girarBolilla {
-      0% { transform: translateY(-180px) rotate(0deg) scale(0.5); }
-      30% { transform: translateY(40px) rotate(180deg) scale(1.1); }
-      55% { transform: translateY(-25px) rotate(300deg) scale(0.95); }
-      75% { transform: translateY(15px) rotate(420deg) scale(1.05); }
-      100% { transform: translateY(0) rotate(720deg) scale(1); }
-    }
+.bolillero{
+    width:260px;
+    height:260px;
+    border-radius:50%;
+    margin:auto;
+    border:8px solid gold;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 0 30px gold;
+}
 
-    button {
-      font-size: 22px;
-      padding: 15px 30px;
-      margin: 10px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+#numeroActual{
+    width:180px;
+    height:180px;
+    position:absolute;
+    left:40px;
+    top:40px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:70px;
+    font-weight:bold;
+    color:white;
+    text-shadow:3px 3px 10px black;
 
-    .sacar {
-      background: #00c853;
-      color: white;
-    }
+    background-image:url("bolilla.png");
+    background-size:cover;
+    background-position:center;
+}
 
-    .reiniciar {
-      background: #d50000;
-      color: white;
-    }
+.animar{
+    animation:girar 1s ease-in-out;
+}
 
-    .numeros {
-      margin-top: 25px;
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      gap: 8px;
-      max-width: 900px;
-      margin-left: auto;
-      margin-right: auto;
-    }
+@keyframes girar{
 
-    .numero {
-      background: #333;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 18px;
-    }
+0%{
+transform:translateY(-250px) rotate(0deg) scale(.4);
+}
 
-    .salio {
-      background: #ffcc00;
-      color: #111;
-      font-weight: bold;
-    }
-  </style>
+30%{
+transform:translateY(30px) rotate(180deg) scale(1.1);
+}
+
+60%{
+transform:translateY(-20px) rotate(450deg);
+}
+
+100%{
+transform:translateY(0px) rotate(720deg) scale(1);
+}
+
+}
+
+button{
+    margin:10px;
+    padding:15px 25px;
+    font-size:20px;
+    font-weight:bold;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.sacar{
+    background:#00c853;
+    color:white;
+}
+
+.reiniciar{
+    background:#d50000;
+    color:white;
+}
+
+.panel{
+    width:280px;
+    background:#222;
+    border:3px solid gold;
+    border-radius:15px;
+    padding:15px;
+    box-shadow:0 0 20px gold;
+}
+
+.panel h2{
+    margin-top:0;
+    color:gold;
+}
+
+.lista-salidos{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    max-height:500px;
+    overflow-y:auto;
+}
+
+.item{
+    background:gold;
+    color:black;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:bold;
+}
+
+.numeros{
+    margin-top:25px;
+    display:grid;
+    grid-template-columns:repeat(10,1fr);
+    gap:5px;
+}
+
+.numero{
+    background:#333;
+    padding:8px;
+    border-radius:6px;
+}
+
+.salio{
+    background:gold;
+    color:black;
+    font-weight:bold;
+}
+
+</style>
 </head>
-
 <body>
 
-  <h1 class="titulo">🎱 BINGOS EL CHANGUITO 🎱</h1>
-  <div class="subtitulo">¡La suerte está por comenzar!</div>
+<h1 class="titulo">🎱 BINGOS EL CHANGUITO 🎱</h1>
+<div class="subtitulo">¡La suerte está por comenzar!</div>
 
-  <div class="opciones">
-    <label for="cantidad">Elegir modalidad:</label>
-    <select id="cantidad" onchange="cambiarCantidad()">
-      <option value="100">Del 1 al 100</option>
-      <option value="200">Del 1 al 200</option>
-    </select>
-  </div>
+<div class="opciones">
+<label>Modalidad:</label>
 
-  <div class="bolillero">
-    <div id="numeroActual">--</div>
-  </div>
+<select id="cantidad" onchange="cambiarCantidad()">
+    <option value="50">Del 1 al 50</option>
+    <option value="100" selected>Del 1 al 100</option>
+    <option value="200">Del 1 al 200</option>
+</select>
 
-  <button class="sacar" onclick="sacarNumero()">Sacar número</button>
-  <button class="reiniciar" onclick="reiniciar()">Reiniciar</button>
+</div>
 
-  <h2>Números que ya salieron</h2>
-  <div class="numeros" id="tablero"></div>
+<div class="contenedor">
 
-  <script>
-    let maxNumero = 100;
-    let numerosDisponibles = [];
-    let numerosSalidos = [];
-    let animando = false;
+<div class="zona-central">
 
-    function iniciar() {
-      numerosDisponibles = [];
-      numerosSalidos = [];
+<div class="bolillero">
+<div id="numeroActual">--</div>
+</div>
 
-      for (let i = 1; i <= maxNumero; i++) {
-        numerosDisponibles.push(i);
-      }
+<button class="sacar" onclick="sacarNumero()">
+🎱 Sacar Número
+</button>
 
-      crearTablero();
-      document.getElementById("numeroActual").textContent = "--";
-    }
+<button class="reiniciar" onclick="reiniciar()">
+🔄 Reiniciar
+</button>
 
-    function crearTablero() {
-      const tablero = document.getElementById("tablero");
-      tablero.innerHTML = "";
+<h2>Números del Bingo</h2>
 
-      for (let i = 1; i <= maxNumero; i++) {
-        const div = document.createElement("div");
-        div.className = "numero";
-        div.id = "num-" + i;
-        div.textContent = i;
-        tablero.appendChild(div);
-      }
-    }
+<div class="numeros" id="tablero"></div>
 
-    function cambiarCantidad() {
-      if (numerosSalidos.length > 0) {
-        const confirmar = confirm("Si cambiás la modalidad, se reinicia el bolillero. ¿Continuar?");
+</div>
 
-        if (!confirmar) {
-          document.getElementById("cantidad").value = maxNumero;
-          return;
-        }
-      }
+<div class="panel">
 
-      maxNumero = parseInt(document.getElementById("cantidad").value);
-      localStorage.setItem("maxNumero", maxNumero);
-      localStorage.removeItem("numerosSalidos");
-      iniciar();
-    }
+<h2>📋 Ya salieron</h2>
 
-    function sacarNumero() {
-      if (animando) return;
+<div id="listaSalidos" class="lista-salidos"></div>
 
-      if (numerosDisponibles.length === 0) {
-        alert("Ya salieron todos los números");
-        return;
-      }
+</div>
 
-      animando = true;
+</div>
 
-      const bola = document.getElementById("numeroActual");
-      bola.textContent = "?";
-      bola.classList.remove("animar");
+<script>
 
-      void bola.offsetWidth;
-      bola.classList.add("animar");
+let maxNumero=100;
+let numerosDisponibles=[];
+let numerosSalidos=[];
+let animando=false;
 
-      setTimeout(() => {
-        const indice = Math.floor(Math.random() * numerosDisponibles.length);
-        const numero = numerosDisponibles.splice(indice, 1)[0];
+function iniciar(){
 
-        numerosSalidos.push(numero);
+numerosDisponibles=[];
+numerosSalidos=[];
 
-        bola.textContent = numero;
-        document.getElementById("num-" + numero).classList.add("salio");
+for(let i=1;i<=maxNumero;i++){
+numerosDisponibles.push(i);
+}
 
-        guardarNumeros();
-        animando = false;
-      }, 1000);
-    }
+crearTablero();
 
-    function guardarNumeros() {
-      localStorage.setItem("numerosSalidos", JSON.stringify(numerosSalidos));
-    }
+document.getElementById("numeroActual").innerHTML="--";
 
-    function cargarDatosGuardados() {
-      const maxGuardado = localStorage.getItem("maxNumero");
-      const salidosGuardados = localStorage.getItem("numerosSalidos");
+}
 
-      if (maxGuardado) {
-        maxNumero = parseInt(maxGuardado);
-        document.getElementById("cantidad").value = maxNumero;
-      }
+function crearTablero(){
 
-      iniciar();
+const tablero=document.getElementById("tablero");
+tablero.innerHTML="";
 
-      if (salidosGuardados) {
-        numerosSalidos = JSON.parse(salidosGuardados);
+for(let i=1;i<=maxNumero;i++){
 
-        numerosDisponibles = [];
+const div=document.createElement("div");
 
-        for (let i = 1; i <= maxNumero; i++) {
-          if (!numerosSalidos.includes(i)) {
-            numerosDisponibles.push(i);
-          }
-        }
+div.className="numero";
+div.id="num-"+i;
+div.textContent=i;
 
-        numerosSalidos.forEach(num => {
-          const casilla = document.getElementById("num-" + num);
-          if (casilla) casilla.classList.add("salio");
-        });
+tablero.appendChild(div);
 
-        if (numerosSalidos.length > 0) {
-          document.getElementById("numeroActual").textContent =
-            numerosSalidos[numerosSalidos.length - 1];
-        }
-      }
-    }
+}
 
-    function reiniciar() {
-      if (confirm("¿Seguro que querés reiniciar el bolillero?")) {
-        localStorage.removeItem("numerosSalidos");
-        iniciar();
-      }
-    }
+}
 
-    cargarDatosGuardados();
-  </script>
+function actualizarLista(){
+
+const lista=document.getElementById("listaSalidos");
+
+lista.innerHTML="";
+
+numerosSalidos.forEach(num=>{
+
+const item=document.createElement("div");
+
+item.className="item";
+item.textContent=num;
+
+lista.appendChild(item);
+
+});
+
+}
+
+function sacarNumero(){
+
+if(animando)return;
+
+if(numerosDisponibles.length===0){
+
+alert("Ya salieron todos los números");
+return;
+
+}
+
+animando=true;
+
+const bola=document.getElementById("numeroActual");
+
+bola.innerHTML="?";
+
+bola.classList.remove("animar");
+
+void bola.offsetWidth;
+
+bola.classList.add("animar");
+
+setTimeout(()=>{
+
+const indice=Math.floor(Math.random()*numerosDisponibles.length);
+
+const numero=numerosDisponibles.splice(indice,1)[0];
+
+numerosSalidos.push(numero);
+
+bola.innerHTML=numero;
+
+document.getElementById("num-"+numero).classList.add("salio");
+
+actualizarLista();
+
+guardar();
+
+animando=false;
+
+},1000);
+
+}
+
+function guardar(){
+
+localStorage.setItem("salidos",JSON.stringify(numerosSalidos));
+localStorage.setItem("maxNumero",maxNumero);
+
+}
+
+function cargar(){
+
+const guardados=localStorage.getItem("salidos");
+const maxGuardado=localStorage.getItem("maxNumero");
+
+if(maxGuardado){
+
+maxNumero=parseInt(maxGuardado);
+
+document.getElementById("cantidad").value=maxNumero;
+
+}
+
+iniciar();
+
+if(guardados){
+
+numerosSalidos=JSON.parse(guardados);
+
+numerosDisponibles=[];
+
+for(let i=1;i<=maxNumero;i++){
+
+if(!numerosSalidos.includes(i)){
+numerosDisponibles.push(i);
+}
+
+}
+
+numerosSalidos.forEach(num=>{
+
+const casilla=document.getElementById("num-"+num);
+
+if(casilla){
+casilla.classList.add("salio");
+}
+
+});
+
+actualizarLista();
+
+if(numerosSalidos.length>0){
+
+document.getElementById("numeroActual").innerHTML=
+numerosSalidos[numerosSalidos.length-1];
+
+}
+
+}
+
+}
+
+function cambiarCantidad(){
+
+if(confirm("¿Cambiar modalidad y reiniciar bingo?")){
+
+maxNumero=parseInt(document.getElementById("cantidad").value);
+
+localStorage.removeItem("salidos");
+
+guardar();
+
+iniciar();
+
+}
+
+}
+
+function reiniciar(){
+
+if(confirm("¿Reiniciar completamente el bingo?")){
+
+localStorage.removeItem("salidos");
+
+iniciar();
+
+}
+
+}
+
+cargar();
+
+</script>
 
 </body>
 </html>
